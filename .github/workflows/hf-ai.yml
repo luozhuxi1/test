@@ -17,7 +17,7 @@ jobs:
       startsWith(github.event.comment.body, '@ai') ||
       startsWith(github.event.comment.body, '/ai') ||
       contains(github.event.issue?.body || '', '@ai')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, luotengchaodeMacBook-Pro]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
