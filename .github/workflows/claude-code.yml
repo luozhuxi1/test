@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   claude-code:
-    runs-on: [self-hosted, luotengchaodeMacBook-Pro]
+    runs-on: [self-hosted, macOS]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
