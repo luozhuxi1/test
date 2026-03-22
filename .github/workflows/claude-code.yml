@@ -20,13 +20,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic/claude-code
+      # 自托管：用本机 Node / Claude。若仍报 command not found，在 actions-runner/.env 里设置 PATH。
+      - name: Expose local Node on PATH (nvm)
+        run: |
+          export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+          if [ -s "$NVM_DIR/nvm.sh" ]; then
+            . "$NVM_DIR/nvm.sh"
+            NODE_DIR="$(dirname "$(command -v node)")"
+            echo "$NODE_DIR" >> "$GITHUB_PATH"
+          fi
+      - name: Verify local tools
+        run: |
+          set -e
+          command -v node && node -v
+          command -v claude && claude --version
 
       - name: Get Issue Data
         id: issue
