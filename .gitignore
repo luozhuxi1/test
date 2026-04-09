@@ -25,7 +25,7 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
-yarn-debug.log*
+yarn-debug.log*exit
 yarn-error.log*
 
 # Package manager lock files (keep one based on your package manager)
