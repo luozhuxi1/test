@@ -9,7 +9,10 @@
       "Bash(cd *)",
       "Bash(cat *)",
       "Bash(echo *)",
-      "Bash(\"C:/Users/user/.claude/plugins/cache/claude-plugins-official/ralph-loop/*)"
+      "Bash(\"C:/Users/user/.claude/plugins/cache/claude-plugins-official/ralph-loop/*)",
+      "Skill(update-config)",
+      "Edit",
+      "Write"
     ]
   }
 }
