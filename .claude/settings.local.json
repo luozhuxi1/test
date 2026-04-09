@@ -1,14 +1,24 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm test:*)",
-      "Bash(npm install:*)",
-      "Bash(npm run:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(gh run:*)",
-      "Bash(gh issue:*)"
+      "Bash(npm test *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git checkout *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git status *)",
+      "Bash(git branch *)",
+      "Bash(git tag *)",
+      "Bash(gh issue *)",
+      "Bash(gh pr *)",
+      "Bash(gh run *)",
+      "Bash(gh auth *)",
+      "Bash(curl *)"
     ]
   }
 }
