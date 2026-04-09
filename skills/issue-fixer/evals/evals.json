@@ -1,0 +1,44 @@
+{
+  "skill_name": "issue-fixer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "修复 issue #1，这个问题描述了一个按钮点击后没有正确更新待办事项状态的 bug",
+      "expected_output": "分析 issue 内容，定位相关 Vue 组件代码，修复状态更新逻辑，运行测试验证，提交代码并关闭 issue",
+      "expectations": [
+        "使用了 gh issue view 获取 issue 详情",
+        "定位到了相关的 Vue 组件文件",
+        "修改了代码并保持了现有代码风格",
+        "运行了 npm run build 验证构建",
+        "运行了 npm test 验证测试通过",
+        "提交了代码并使用 Fixes #1 关联 issue",
+        "调用了飞书 webhook 发送通知"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "处理 issue #42，用户报告说添加待办事项时输入框没有清空",
+      "expected_output": "读取 issue 详情，找到输入框相关的代码，修复清空逻辑，验证后提交并关闭 issue",
+      "expectations": [
+        "获取了 issue #42 的详细信息",
+        "定位到输入框相关的组件代码",
+        "修复了添加待办后清空输入框的逻辑",
+        "运行了构建和测试验证",
+        "推送代码并关闭了 issue"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "https://github.com/test/test/issues/15 这个 issue 报告删除功能不工作，请修复",
+      "expected_output": "访问提供的 issue 链接获取详情，定位删除功能的 API 调用代码，修复删除逻辑，完成验证流程后关闭 issue",
+      "expectations": [
+        "从提供的 URL 获取了 issue 信息",
+        "定位到了删除待办的相关代码",
+        "修复了删除功能的 bug",
+        "运行了完整的验证流程（构建 + 测试）",
+        "提交时使用了正确的 commit message 格式",
+        "发送了飞书 webhook 通知"
+      ]
+    }
+  ]
+}

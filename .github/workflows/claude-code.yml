@@ -1,0 +1,80 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned, labeled]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  claude-code:
+    runs-on: [self-hosted, luotengchaodeMacBook-Pro]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 自托管：用本机 Node / Claude。若仍报 command not found，在 actions-runner/.env 里设置 PATH。
+      - name: Expose local Node on PATH (nvm)
+        run: |
+          export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+          if [ -s "$NVM_DIR/nvm.sh" ]; then
+            . "$NVM_DIR/nvm.sh"
+            NODE_DIR="$(dirname "$(command -v node)")"
+            echo "$NODE_DIR" >> "$GITHUB_PATH"
+          fi
+      - name: Verify local tools
+        run: |
+          set -e
+          command -v node && node -v
+          command -v claude && claude --version
+
+      - name: Get Issue Data
+        id: issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+            echo "body=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
+          else
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+            echo "body=${{ github.event.issue.body }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Process with Claude
+        id: claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 提取用户请求
+          USER_PROMPT=$(echo "${{ steps.issue.outputs.body }}" | sed 's/.*[@\/][Cc]laude\s*//' | xargs)
+
+          if [ -z "$USER_PROMPT" ]; then
+            echo "No valid prompt found"
+            echo "response=Skipped - no valid prompt" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Processing: $USER_PROMPT"
+
+          # 运行 claude-code 并捕获输出
+          RESPONSE=$(claude -p "$USER_PROMPT" 2>&1)
+
+          # 保存响应
+          echo "response<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESPONSE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post Response
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment "${{ steps.issue.outputs.number }}" --body "**Claude Response:**\n\n${{ steps.claude.outputs.response }}"
