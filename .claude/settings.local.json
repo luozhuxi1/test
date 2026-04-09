@@ -8,7 +8,8 @@
       "Bash(ls *)",
       "Bash(cd *)",
       "Bash(cat *)",
-      "Bash(echo *)"
+      "Bash(echo *)",
+      "Bash(\"C:/Users/user/.claude/plugins/cache/claude-plugins-official/ralph-loop/*)"
     ]
   }
 }
