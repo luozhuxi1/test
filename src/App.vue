@@ -18,13 +18,6 @@
       加载中...
     </div>
 
-    <!-- 自定义提示弹窗 -->
-    <transition name="toast-fade">
-      <div v-if="toast.visible" class="custom-toast" :class="toast.type">
-        {{ toast.message }}
-      </div>
-    </transition>
-
     <!-- 输入区域 -->
     <div class="input-section" v-show="!loading">
       <input
@@ -105,13 +98,7 @@ export default {
       todos: [],
       loading: false,
       error: null,
-      useLocalMode: false, // 当 API 不可用时启用本地模式
-      toast: {
-        visible: false,
-        message: '',
-        type: 'warning',
-        timer: null
-      }
+      useLocalMode: false // 当 API 不可用时启用本地模式
     }
   },
   computed: {
@@ -165,7 +152,7 @@ export default {
      */
     async addTodo() {
       if (this.newTodo.trim() === '') {
-        this.showToast('待办事项不能为空', 'warning')
+        alert('待办事项不能为空')
         return
       }
 
@@ -239,18 +226,6 @@ export default {
     /**
      * 统一错误处理
      */
-    showToast(message, type = 'warning') {
-      if (this.toast.timer) {
-        clearTimeout(this.toast.timer)
-      }
-      this.toast.visible = true
-      this.toast.message = message
-      this.toast.type = type
-      this.toast.timer = setTimeout(() => {
-        this.toast.visible = false
-      }, 3000)
-    },
-
     handleError(error, defaultMessage) {
       if (error instanceof HttpError && error.status === 0) {
         // 网络错误，切换到本地模式
@@ -477,41 +452,4 @@ h1 {
   background: #e0e0e0;
 }
 
-/* 自定义提示弹窗 */
-.custom-toast {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #fff;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.custom-toast.warning {
-  background: #faad14;
-  color: #fff;
-}
-
-.custom-toast.error {
-  background: #ff4d4f;
-}
-
-.custom-toast.success {
-  background: #52c41a;
-}
-
-.toast-fade-enter-active,
-.toast-fade-leave-active {
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-.toast-fade-enter-from,
-.toast-fade-leave-to {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-12px);
-}
 </style>
