@@ -151,7 +151,10 @@ export default {
      * 添加待办
      */
     async addTodo() {
-      if (this.newTodo.trim() === '') return
+      if (this.newTodo.trim() === '') {
+        alert('待办事项不能为空')
+        return
+      }
 
       const todoData = {
         text: this.newTodo.trim(),
